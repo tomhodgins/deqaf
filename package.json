@@ -1,0 +1,33 @@
+{
+  "name": "deqaf",
+  "version": "0.0.1",
+  "description": "Decaffeinate your CSS stylesheets client-side",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomhodgins/deqaf.git"
+  },
+  "keywords": [
+    "css",
+    "jsincss",
+    "polyfill",
+    "scoped",
+    "styles",
+    "element",
+    "queries",
+    "extended",
+    "selector",
+    "plugin",
+    "feature",
+    "reprocessor"
+  ],
+  "author": "Tommy Hodgins",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tomhodgins/deqaf/issues"
+  },
+  "homepage": "https://github.com/tomhodgins/deqaf#readme"
+}
