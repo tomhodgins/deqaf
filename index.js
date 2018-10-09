@@ -7,8 +7,10 @@ export default function(
   }
 ) {
 
+  const generic = []
+
   // For each stylesheet in the CSSOM
-  return Array.from(document.styleSheets).forEach(stylesheet =>
+  Array.from(document.styleSheets).forEach(stylesheet =>
 
     // For each rule in the stylesheet
     Array.from(stylesheet.cssRules).forEach(rule => {
@@ -31,7 +33,11 @@ export default function(
 
           // [="(args)"]
           const args = /.*\[--.+="(.*)"\]/.test(rule.selectorText)
-            && rule.selectorText.match(/.*\[--.+="(.*)"\]/)[1]
+            && JSON.parse(`[${
+              rule.selectorText
+                .match(/.*\[--.+="(.*)"\]/)[1]
+                .replace(/\\"/g, '"')
+            }]`)
             || ''
 
           // { declarations }
@@ -47,24 +53,29 @@ export default function(
             && Array.from(rule.style).includes('--events')
           ) {
 
+            const customSelector = rule.style.getPropertyValue('--selector').trim()
+
             // Push a rule with custom events to output
+
             jsincss(
               () => plugins.rule[plugin](
                 selector,
-                args,
+                ...args,
                 declarations
               ),
-              rule.style.getPropertyValue('--selector').trim(),
-              rule.style.getPropertyValue('--events').trim()
+              (customSelector === 'window'
+              ? window
+              : customSelector.slice(1, -1)),
+              JSON.parse(rule.style.getPropertyValue('--events'))
             )
 
           } else {
 
             // Otherwise push a generic rule to output
-            jsincss(
+            generic.push(
               () => plugins.rule[plugin](
                 selector,
-                args,
+                ...args,
                 declarations
               )
             )
@@ -89,7 +100,6 @@ export default function(
             && JSON.parse(`[${
               rule.conditionText
                 .replace(/^[^(]*\((.*)\)$/, '$1')
-                .trim()
             }]`)
             || ''
 
@@ -118,20 +128,24 @@ export default function(
               .find(rule => rule.selectorText === '[--options]')
               .style
 
-              // Push a stylesheet with custom events to output
-              jsincss(
-                () => plugins.stylesheet[plugin](
-                  ...args,
-                  body.trim().replace(/\n/g, '\n    ')
-                ),
-                props.getPropertyValue('--selector').trim(),
-                props.getPropertyValue('--events').trim()
-              )
+            const customSelector = props.getPropertyValue('--selector').trim()
+
+            // Push a stylesheet with custom events to output
+            jsincss(
+              () => plugins.stylesheet[plugin](
+                ...args,
+                body.trim().replace(/\n/g, '\n    ')
+              ),
+              (customSelector === 'window'
+              ? window
+              : customSelector.slice(1, -1)),
+              JSON.parse(props.getPropertyValue('--events'))
+            )
 
           } else {
 
             // Otherwise push a generic stylesheet to output
-            jsincss(
+            generic.push(
               () => plugins.stylesheet[plugin](
                 ...args,
                 body.trim().replace(/\n/g, '\n  ')
@@ -147,5 +161,7 @@ export default function(
     })
 
   )
+
+  return jsincss(() => generic.map(func => func()).join(''))
 
 }
