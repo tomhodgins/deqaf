@@ -1,6 +1,6 @@
 {
   "name": "deqaf",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Decaffeinate your CSS stylesheets client-side",
   "main": "index.js",
   "scripts": {
