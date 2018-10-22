@@ -1,11 +1,16 @@
 import jsincss from 'https://unpkg.com/jsincss/index.vanilla.js'
 
 export default function(
-  plugins = {
-    stylesheet: {},
-    rule: {}
-  }
+  plugins = {}
 ) {
+
+  plugins = Object.assign(
+    {
+      stylesheet: {},
+      rule: {}
+    },
+    plugins
+  )
 
   const generic = []
 
