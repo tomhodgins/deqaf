@@ -26,6 +26,7 @@ export default function(
         // selector[]
         const selector = /(.*)\[--.+\]/.test(rule.selectorText)
           && rule.selectorText.match(/(.*)\[--.+\]/)[1]
+              .replace(/([>~+])\s*$/, '$1 *')
           || '*'
 
         // [plugin]
@@ -63,7 +64,7 @@ export default function(
             // Push a rule with custom events to output
 
             jsincss(
-              () => plugins.rule[plugin](
+              event => plugins.rule[plugin](
                 selector,
                 ...args,
                 declarations
@@ -78,7 +79,7 @@ export default function(
 
             // Otherwise push a generic rule to output
             generic.push(
-              () => plugins.rule[plugin](
+              event => plugins.rule[plugin](
                 selector,
                 ...args,
                 declarations
@@ -138,7 +139,7 @@ export default function(
 
             // Push a stylesheet with custom events to output
             jsincss(
-              () => plugins.stylesheet[plugin](
+              event => plugins.stylesheet[plugin](
                 ...args,
                 body.trim().replace(/\n/g, '\n    ')
               ),
@@ -152,7 +153,7 @@ export default function(
 
             // Otherwise push a generic stylesheet to output
             generic.push(
-              () => plugins.stylesheet[plugin](
+              event => plugins.stylesheet[plugin](
                 ...args,
                 body.trim().replace(/\n/g, '\n  ')
               )
