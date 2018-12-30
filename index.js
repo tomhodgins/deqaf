@@ -25,10 +25,10 @@ export default function(
 
         // selector[]
         const selector = /(.*)\[--.+\]/.test(rule.selectorText)
-          ? rule.selectorText.match(/(.*)\[--.+\]/)[1]
+          && rule.selectorText.match(/(.*)\[--.+\]/)[1]
               .replace(/([>~+]|\|\|)\s*$/, '$1 *')
               .replace(/\\(?![0-9a-fA-F\n]{1,6}|\n|$)/g, '')
-          : '*'
+          || '*'
 
         // [plugin]
         const plugin = rule.selectorText
@@ -40,14 +40,14 @@ export default function(
 
           // [="(args)"]
           const args = /.*\[--.+="(.*)"\]/.test(rule.selectorText)
-            ? JSON.parse(
+            && JSON.parse(
               '['
               + rule.selectorText
                   .match(/.*\[--.+="(.*)"\]/)[1]
                   .replace(/\\"/g, '"')
               + ']'
             )
-            : ''
+            || ''
 
           // { declarations }
           const declarations = rule.cssText
@@ -107,14 +107,14 @@ export default function(
 
           // (args)
           const args = /--[^(]+(.*)/.test(rule.conditionText)
-            ? JSON.parse(
+            && JSON.parse(
               '['
               + rule.conditionText
                 .replace(/^\((.+)\)$/g, '$1')
                 .replace(/^[^(]*\((.*)\)$/, '$1')
               + ']'
             )
-            : ''
+            || ''
 
           // { body }
           const body = rule.cssText
