@@ -6,7 +6,7 @@ Decaffeinate your JS-powered CSS stylesheets client-side
 
 ## About
 
-This project provides a way to parse extended CSS in the browser and separate out the JS-powered styles. This allows you to write CSS stylesheets that include styles supported by JavaScript plugins.
+This project provides a way to parse extended CSS in the browser and separate out the JS-powered styles from ["caffeinated" CSS stylesheets](https://github.com/tomhodgins/caffeinated-style-sheets). This allows you to write CSS stylesheets that include styles supported by JavaScript plugins.
 
 ## Plugin Usage
 
