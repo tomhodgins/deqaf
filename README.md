@@ -47,8 +47,8 @@ If you had a plugin named `example()` that was loaded in the file where you're u
 ```js
 example(selector, rule) {
   return Math.random() > .5
-  ? `${selector} { ${rule} }`
-  : ''
+    ? `${selector} { ${rule} }`
+    : ''
 }
 ```
 
@@ -71,8 +71,8 @@ On the other hand if we had a simple stylesheet plugin which takes a CSS stylesh
 ```js
 function example(stylesheet) {
   return Math.random() > .5
-  ? stylesheet
-  : ''
+    ? stylesheet
+    : ''
 }
 ```
 
